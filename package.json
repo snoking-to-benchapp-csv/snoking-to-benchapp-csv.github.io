@@ -1,0 +1,18 @@
+{
+  "name": "snoking_json_benchapp_csv",
+  "version": "0.0.1",
+  "description": "Snowking website data -> BenchApp CSV",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "lint": "prettier"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/moment": "^2.13.0",
+    "axios": "^0.18.0",
+    "moment": "^2.24.0",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  }
+}
