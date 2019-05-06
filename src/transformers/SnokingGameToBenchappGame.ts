@@ -1,13 +1,13 @@
-import { SnokingGame } from "../../typings/snokingData";
-import { BenchAppGame } from "../../typings/benchAppData";
-import moment = require("moment");
+import { SnokingGame } from '../../typings/snokingData';
+import { BenchAppGame } from '../../typings/benchAppData';
+import moment = require('moment');
 
-const BENCH_APP_DATE_FORMAT_STRING = 'ddd, MMM D, YYYY'
+const BENCH_APP_DATE_FORMAT_STRING = 'ddd, MMM D, YYYY';
 
 const RINKNAME_TO_ADDRESS: { [id: string]: string | null } = {
-    'Renton': '12620 164th Ave SE, Renton, WA 98059',
-    'Kirkland': '14326 124th Ave NE, Kirkland, WA 98034',
-}
+    Renton: '12620 164th Ave SE, Renton, WA 98059',
+    Kirkland: '14326 124th Ave NE, Kirkland, WA 98034',
+};
 
 export function SnokingGameToBenchappGame(snokingGame: SnokingGame): BenchAppGame {
     return {
@@ -19,5 +19,5 @@ export function SnokingGameToBenchappGame(snokingGame: SnokingGame): BenchAppGam
         Time: snokingGame.time,
         Location: snokingGame.rinkName,
         Address: RINKNAME_TO_ADDRESS[snokingGame.rinkName] || undefined,
-    }
+    };
 }
