@@ -11,14 +11,14 @@ function BenchAppGameToCSVRow(game: BenchAppGame): string {
         game.Title || '',
         game.Home,
         game.Away,
-        `"${game.Date}"`,
+        game.Date,
         game.Time,
         game.Location || '',
         game.Address || '',
         game.Notes || '',
     ];
 
-    return fields.join(',');
+    return fields.map(x => `"${x}"`).join(',');
 }
 
 export function BenchAppGamesToCSV(games: BenchAppGame[]): string {
