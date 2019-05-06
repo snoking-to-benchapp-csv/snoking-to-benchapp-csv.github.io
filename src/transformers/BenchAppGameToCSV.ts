@@ -1,4 +1,5 @@
 import { BenchAppGame } from '../../typings/benchAppData';
+import { EOL } from 'os';
 
 const CSV_HEADER =
     'Type,Game Type,Title (Optional),Home,Away,Date,Time,Location (Optional),Address (Optional),Notes (Optional)';
@@ -10,7 +11,7 @@ function BenchAppGameToCSVRow(game: BenchAppGame): string {
         game.Title || '',
         game.Home,
         game.Away,
-        game.Date,
+        `"${game.Date}"`,
         game.Time,
         game.Location || '',
         game.Address || '',
@@ -23,7 +24,7 @@ function BenchAppGameToCSVRow(game: BenchAppGame): string {
 export function BenchAppGamesToCSV(games: BenchAppGame[]): string {
     let ans = '';
     ans += CSV_HEADER;
-    ans += '\n';
-    ans += games.map(BenchAppGameToCSVRow).join('\n');
+    ans += EOL;
+    ans += games.map(BenchAppGameToCSVRow).join(EOL);
     return ans;
 }
