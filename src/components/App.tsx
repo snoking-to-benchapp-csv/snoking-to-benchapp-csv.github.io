@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import { FormControlProps } from "react-bootstrap/FormControl";
 import { saveAs } from "file-saver";
 import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 
 import Button from "react-bootstrap/Button";
 import { debounce } from "lodash";
@@ -47,7 +48,8 @@ export class App extends React.Component<{}, AppState> {
     }
 
     public state = {
-        csvGenerationState: CSV_GENERATION_STATE.NOT_READY
+        csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
+        errorString: undefined
     };
 
     private onUrlChange = (e: React.FormEvent<FormControlProps>) => {
@@ -61,7 +63,7 @@ export class App extends React.Component<{}, AppState> {
 
         if (VALID_SNOKING_URLS.findIndex((x) => url.startsWith(x)) < 0) {
             // Not a valid url prefix
-            this.setStatePromise({
+            this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
                 errorString: "Please enter a valid Snoking URL"
             });
@@ -70,7 +72,7 @@ export class App extends React.Component<{}, AppState> {
 
         const dataUrl = BenchAppUIUrlToDataUrl(url);
         if (!dataUrl) {
-            this.setStatePromise({
+            this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
                 errorString: "Please enter a valid Snoking URL for a specific team"
             });
@@ -81,7 +83,7 @@ export class App extends React.Component<{}, AppState> {
         try {
             snoKingSeasonData = await getSnokingSeasonData(dataUrl);
         } catch {
-            this.setStatePromise({
+            this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
                 errorString: "There was an issue getting the season data. Please try again later"
             });
@@ -93,15 +95,16 @@ export class App extends React.Component<{}, AppState> {
         try {
             csvData = BenchAppGamesToCSV(snoKingSeasonData.map(SnokingGameToBenchappGame));
         } catch {
-            this.setStatePromise({
+            this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
                 errorString: "There was an issue parsing the season data. Please try again later"
             });
             return;
         }
 
-        this.setStatePromise({
-            csvGenerationState: CSV_GENERATION_STATE.READY
+        this.setState({
+            csvGenerationState: CSV_GENERATION_STATE.READY,
+            errorString: undefined
         });
 
         this.blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
@@ -124,6 +127,7 @@ export class App extends React.Component<{}, AppState> {
                 </Navbar>
                 <Container className="content">
                     <div className="centeringDiv">
+                        {this.state.errorString && <Alert variant="danger">{this.state.errorString}</Alert>}
                         <Form.Group controlId="teamID">
                             <Form.Control className="urlInput" placeholder="Team URL" onChange={this.onUrlChange} />
                         </Form.Group>
