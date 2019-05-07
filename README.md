@@ -3,7 +3,7 @@
 1. `npm i`
 1. `npm start -- <team url>`
 
-# Example usage
+# CLI usage
 ```
-npm start -- https://snokinghockeyleague.com/#/home/schedule/1060/0/1075
+npm cli -- https://snokinghockeyleague.com/#/home/schedule/1060/0/1075
 ```

@@ -1,28 +1,43 @@
 {
-  "name": "snoking_json_benchapp_csv",
-  "version": "0.0.1",
-  "description": "Snowking website data -> BenchApp CSV",
-  "scripts": {
-    "start": "ts-node index.ts",
-    "lint": "eslint '*/**/*.{js,ts}' --quiet --fix"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/moment": "^2.13.0",
-    "axios": "^0.18.0",
-    "moment": "^2.24.0",
-    "prettier-init": "^1.1.0",
-    "ts-node": "^8.1.0",
-    "typescript": "^3.4.5"
-  },
-  "devDependencies": {
-    "@types/node": "^12.0.0",
-    "@typescript-eslint/eslint-plugin": "^1.7.0",
-    "@typescript-eslint/parser": "^1.7.0",
-    "eslint": "^5.16.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "prettier": "^1.17.0"
-  }
+    "name": "snoking_json_benchapp_csv",
+    "version": "0.0.1",
+    "description": "Snowking website data -> BenchApp CSV",
+    "scripts": {
+        "start": "parcel index.html",
+        "cli": "ts-node index.ts",
+        "lint": "eslint **\\*.ts* --quiet --fix"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/file-saver": "^2.0.0",
+        "@types/lodash": "^4.14.123",
+        "@types/moment": "^2.13.0",
+        "@types/react": "^16.8.16",
+        "@types/react-bootstrap": "^0.32.17",
+        "@types/react-dom": "^16.8.4",
+        "axios": "^0.18.0",
+        "file-saver": "^2.0.1",
+        "lodash": "^4.17.11",
+        "moment": "^2.24.0",
+        "parcel": "^1.12.3",
+        "prettier-init": "^1.1.0",
+        "react": "^16.8.6",
+        "react-bootstrap": "^1.0.0-beta.8",
+        "react-dom": "^16.8.6",
+        "ts-node": "^8.1.0",
+        "typescript": "^3.4.5"
+    },
+    "devDependencies": {
+        "@types/node": "^12.0.0",
+        "@typescript-eslint/eslint-plugin": "^1.7.0",
+        "@typescript-eslint/parser": "^1.7.0",
+        "eslint": "^5.16.0",
+        "eslint-config-prettier": "^4.2.0",
+        "eslint-plugin-prettier": "^3.0.1",
+        "prettier": "^1.17.0"
+    },
+    "browserslist": [
+        "last 2 Chrome versions"
+    ]
 }
