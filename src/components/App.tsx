@@ -17,6 +17,7 @@ import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
 import { BenchAppGamesToCSV } from "../transformers/BenchappGameToCSV";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
+import Nav from "react-bootstrap/Nav";
 
 const VALID_SNOKING_URLS = [
     "https://snokingpondhockey.com",
@@ -124,6 +125,14 @@ export class App extends React.Component<{}, AppState> {
                     <Navbar.Brand href="#">
                         <b>SnoKing to BenchApp CSV</b>
                     </Navbar.Brand>
+                    <Nav variant="pills" fill className="justify-content-end" style={{ width: "100%" }}>
+                        <Button
+                            href="https://github.com/snoking-to-benchapp-csv/snoking-to-benchapp-csv.github.io"
+                            variant="info"
+                        >
+                            GitHub
+                        </Button>
+                    </Nav>
                 </Navbar>
                 <Container className="content">
                     <div className="centeringDiv">
