@@ -79,7 +79,7 @@ export class DownloadPage extends React.Component<{}, AppState> {
 
         let snoKingSeasonData: SnokingGame[] = [];
         try {
-            snoKingSeasonData = await getSnokingSeasonData(dataUrl);
+            snoKingSeasonData = await getSnokingSeasonData(dataUrl.snokingUrl);
         } catch {
             this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
@@ -91,7 +91,7 @@ export class DownloadPage extends React.Component<{}, AppState> {
         let csvData = "";
 
         try {
-            csvData = BenchAppGamesToCSV(snoKingSeasonData.map(SnokingGameToBenchappGame));
+            csvData = BenchAppGamesToCSV(snoKingSeasonData.map((n) => SnokingGameToBenchappGame(n, dataUrl.teamId)));
         } catch {
             this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,

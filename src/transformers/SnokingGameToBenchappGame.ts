@@ -9,7 +9,7 @@ const RINKNAME_TO_ADDRESS: { [id: string]: string | null } = {
     Kirkland: '14326 124th Ave NE, Kirkland, WA 98034',
 };
 
-export function SnokingGameToBenchappGame(snokingGame: SnokingGame): BenchAppGame {
+export function SnokingGameToBenchappGame(snokingGame: SnokingGame, teamId: number): BenchAppGame {
     return {
         Type: 'GAME',
         'Game Type': 'REGULAR',
@@ -17,7 +17,10 @@ export function SnokingGameToBenchappGame(snokingGame: SnokingGame): BenchAppGam
         Away: snokingGame.teamAwayName,
         Date: moment(snokingGame.dateTime).format(BENCH_APP_DATE_FORMAT_STRING),
         Time: snokingGame.time,
-        Location: snokingGame.rinkName,
+        Location:
+            teamId == snokingGame.teamHomeSeasonId
+                ? snokingGame.rinkName + ' - Home'
+                : snokingGame.rinkName + ' - Away',
         Address: RINKNAME_TO_ADDRESS[snokingGame.rinkName] || undefined,
     };
 }
