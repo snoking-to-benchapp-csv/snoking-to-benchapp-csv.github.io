@@ -5,7 +5,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { DownloadPage } from "./DownloadPage";
 import { Instructions } from "./Instructions";
 
-import { getCurrentTeams, TeamInfo } from "../services/getTeams";
+import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
 
 export const TeamGettingPage = () => {
     const [teams, setTeams] = React.useState<null | TeamInfo>(null);

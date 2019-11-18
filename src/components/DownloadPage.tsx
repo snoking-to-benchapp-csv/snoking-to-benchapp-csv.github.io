@@ -5,7 +5,7 @@ import "./App.css";
 import { saveAs } from "file-saver";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
-import { TeamInfo } from "../services/getTeams";
+import { TeamInfo } from "../services/CurrentTeams";
 import Button from "react-bootstrap/Button";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
