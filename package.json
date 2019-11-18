@@ -4,7 +4,6 @@
     "description": "Snowking website data -> BenchApp CSV",
     "scripts": {
         "start": "parcel dev.html",
-        "cli": "ts-node index.ts",
         "lint": "eslint **\\*.ts* --quiet --fix",
         "build:clean": "shx rm -rf assets index.html",
         "build:assets": "parcel build dev.html --public-url /assets --out-dir assets && shx mv ./assets/dev.html index.html",
@@ -19,6 +18,7 @@
         "@types/react": "^16.9.5",
         "@types/react-bootstrap": "^0.32.17",
         "@types/react-dom": "^16.9.1",
+        "@types/react-select": "^3.0.8",
         "axios": "^0.18.1",
         "file-saver": "^2.0.1",
         "lodash": "^4.17.15",
@@ -28,6 +28,7 @@
         "react": "^16.9.0",
         "react-bootstrap": "^1.0.0-beta.8",
         "react-dom": "^16.9.0",
+        "react-select": "^3.0.8",
         "shx": "^0.3.2",
         "ts-node": "^8.1.0",
         "typescript": "^3.4.5"

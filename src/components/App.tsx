@@ -3,13 +3,13 @@ import React from "react";
 import "./App.css";
 
 import { Nav } from "./Nav";
-import { DownloadPage } from "./DownloadPage";
+import { TeamGettingPage } from "./TeamGettingPage";
 
 export const App = () => {
     return (
         <>
             <Nav />
-            <DownloadPage />
+            <TeamGettingPage />
         </>
     );
 };

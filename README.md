@@ -7,12 +7,6 @@
 1. Have node installed
 1. `npm i`
 
-# CLI usage
-
-```
-npm cli -- https://snokinghockeyleague.com/#/home/schedule/1060/0/1075
-```
-
 # Local WebDev
 
 1. `npm start`
