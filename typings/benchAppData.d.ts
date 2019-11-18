@@ -43,6 +43,11 @@ export interface BenchAppGame {
     Time: string;
 
     /**
+     * Must be this format H:MM
+     */
+    Duration: string;
+
+    /**
      * The name of the facility ex. Rink name, etc
      */
     Location?: string;

@@ -2,7 +2,7 @@ import { SnokingGame } from "../../typings/snokingData";
 import { BenchAppGame } from "../../typings/benchAppData";
 import moment = require("moment");
 
-const BENCH_APP_DATE_FORMAT_STRING = "ddd, MMM D, YYYY";
+const BENCH_APP_DATE_FORMAT_STRING = "D/M/YYYY";
 
 const RINKNAME_TO_ADDRESS: { [id: string]: string | null } = {
     Renton: "12620 164th Ave SE, Renton, WA 98059",
@@ -17,6 +17,7 @@ export function SnokingGameToBenchappGame(snokingGame: SnokingGame, teamId: stri
         Away: snokingGame.teamAwayName,
         Date: moment(snokingGame.dateTime).format(BENCH_APP_DATE_FORMAT_STRING),
         Time: snokingGame.time,
+        Duration: "1:00",
         Location:
             teamId == `${snokingGame.teamHomeSeasonId}`
                 ? snokingGame.rinkName + " - Home"

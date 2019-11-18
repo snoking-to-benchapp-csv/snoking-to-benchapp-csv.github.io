@@ -9,7 +9,9 @@ export const App = () => {
     return (
         <>
             <Nav />
-            <TeamGettingPage />
+            <div style={{ maxWidth: "1100px", margin: " auto " }}>
+                <TeamGettingPage />
+            </div>
         </>
     );
 };

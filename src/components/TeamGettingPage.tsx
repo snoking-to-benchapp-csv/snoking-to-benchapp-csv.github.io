@@ -1,7 +1,11 @@
 import * as React from "react";
-import { getCurrentTeams, TeamInfo } from "../services/getTeams";
-import { DownloadPage } from "./DownloadPage";
+
 import Spinner from "react-bootstrap/Spinner";
+
+import { DownloadPage } from "./DownloadPage";
+import { Instructions } from "./Instructions";
+
+import { getCurrentTeams, TeamInfo } from "../services/getTeams";
 
 export const TeamGettingPage = () => {
     const [teams, setTeams] = React.useState<null | TeamInfo>(null);
@@ -11,7 +15,10 @@ export const TeamGettingPage = () => {
     return (
         <>
             {teams ? (
-                <DownloadPage teamInfo={teams} />
+                <>
+                    <DownloadPage teamInfo={teams} />
+                    <Instructions />
+                </>
             ) : (
                 <div style={{ width: "100%", display: "flex", justifyContent: "center", marginTop: "1em" }}>
                     <Spinner animation="border" />
