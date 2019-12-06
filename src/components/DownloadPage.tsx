@@ -7,11 +7,14 @@ import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import { TeamInfo } from "../services/CurrentTeams";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
 import { BenchAppGamesToCSV } from "../transformers/BenchappGameToCSV";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
 import Select, { ValueType } from "react-select";
+
+import moment = require("moment");
 
 enum CSV_GENERATION_STATE {
     NOT_READY,
@@ -25,6 +28,7 @@ interface AppProps {
 interface AppState {
     csvGenerationState: CSV_GENERATION_STATE;
     errorString?: string;
+    newGamesOnly: boolean;
 }
 
 export class DownloadPage extends React.Component<AppProps, AppState> {
@@ -40,7 +44,8 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
 
     public state = {
         csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
-        errorString: undefined
+        errorString: undefined,
+        newGamesOnly: true
     };
 
     private onUrlChange = (e: ValueType<{ value: { snokingUrl: string; teamId: string }; label: string }>) => {
@@ -72,7 +77,16 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         let csvData = "";
 
         try {
-            csvData = BenchAppGamesToCSV(snoKingSeasonData.map((n) => SnokingGameToBenchappGame(n, teamId)));
+            csvData = BenchAppGamesToCSV(
+                snoKingSeasonData
+                    .filter(
+                        (n) =>
+                            !this.state.newGamesOnly ||
+                            moment(n.dateTime) >
+                                moment().subtract(1, "days") /* only games in the future with some fudge*/
+                    )
+                    .map((n) => SnokingGameToBenchappGame(n, teamId))
+            );
         } catch (e) {
             console.error({ error: e });
             this.setState({
@@ -111,15 +125,23 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                 </div>
                 {(this.state.csvGenerationState === CSV_GENERATION_STATE.NOT_READY ||
                     this.state.csvGenerationState === CSV_GENERATION_STATE.READY) && (
-                    <div className="button">
-                        <Button
-                            block
-                            variant="primary"
-                            disabled={this.state.csvGenerationState === CSV_GENERATION_STATE.NOT_READY}
-                            onClick={this.saveBlob}
-                        >
-                            Download CSV
-                        </Button>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="button" style={{ paddingRight: "1em" }}>
+                            <Button
+                                block
+                                variant="primary"
+                                disabled={this.state.csvGenerationState === CSV_GENERATION_STATE.NOT_READY}
+                                onClick={this.saveBlob}
+                            >
+                                Download CSV
+                            </Button>
+                        </div>
+                        <Form.Check
+                            style={{ paddingTop: ".3em" }}
+                            type="checkbox"
+                            label="Include old games?"
+                            onChange={() => this.setState({ newGamesOnly: !this.state.newGamesOnly })}
+                        />
                     </div>
                 )}
 
