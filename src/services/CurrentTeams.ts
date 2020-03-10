@@ -11,8 +11,8 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
     );
 }
 
-async function getFiveVFiveCurrentTeams(): Promise<TeamInfo> {
-    const { id, name: seasonName } = (await getFiveVFiveSeasons())[0];
+async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
+    const { id, name: seasonName } = (await getFiveVFiveSeasons())[index];
 
     return (await get(`http://snokinghockeyleague.com/api/team/list/${id}/0?v=1021270`)).map((x: any) => ({
         name: `5v5: ${x.name} (${x.divisionName} - ${seasonName})`,
@@ -41,6 +41,10 @@ async function getPondSeasonCurrentTeams(): Promise<Array<{ name: string; snokin
 }
 
 export async function getCurrentTeams(): Promise<TeamInfo> {
-    const seasonData = await Promise.all([getFiveVFiveCurrentTeams(), getPondSeasonCurrentTeams()]);
+    const seasonData = await Promise.all([
+        getFiveVFiveCurrentTeams(),
+        getFiveVFiveCurrentTeams(1),
+        getPondSeasonCurrentTeams()
+    ]);
     return seasonData.reduce((a, b) => a.concat(b));
 }
