@@ -5,7 +5,7 @@
     "scripts": {
         "start": "parcel dev.html",
         "lint": "eslint **\\*.ts* --quiet --fix",
-        "build": "parcel build dev.html --out-dir build"
+        "build": "parcel build index.html --public-url / --out-dir build"
     },
     "author": "",
     "license": "ISC",

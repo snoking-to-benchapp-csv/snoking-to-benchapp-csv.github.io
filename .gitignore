@@ -83,3 +83,4 @@ jspm_packages/
 .dynamodb/
 
 out.csv
+build
