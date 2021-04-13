@@ -5,9 +5,7 @@
     "scripts": {
         "start": "parcel dev.html",
         "lint": "eslint **\\*.ts* --quiet --fix",
-        "build:clean": "shx rm -rf assets index.html",
-        "build:assets": "parcel build dev.html --public-url /assets --out-dir assets && shx mv ./assets/dev.html index.html",
-        "build": "npm run build:clean && npm run build:assets"
+        "build": "parcel build dev.html --out-dir build"
     },
     "author": "",
     "license": "ISC",
