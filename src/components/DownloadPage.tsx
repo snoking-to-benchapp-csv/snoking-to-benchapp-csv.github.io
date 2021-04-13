@@ -10,7 +10,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
-import { BenchAppGamesToCSV } from "../transformers/BenchappGameToCSV";
+import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
 import Select, { ValueType } from "react-select";
 

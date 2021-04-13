@@ -13,9 +13,6 @@
 
 # Comitting Changes
 
-1. Make your change
-1. `npm run lint` to make sure it's pretty
-1. `npm run build` to build production assets (b/c we check those in for free github pages hosting)
-1. Get it into master
-1. ???
-1. Profit
+We use GitHub workflows to compile the React app. The compiled React app is then commit to the `gh-pages` branch, which is where the page is served from.
+
+tl;dr Make changes, commit. CI handles the CD
