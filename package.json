@@ -21,7 +21,7 @@
         "file-saver": "^2.0.1",
         "lodash": "^4.17.21",
         "moment": "^2.24.0",
-        "parcel": "^1.12.4",
+        "parcel": "^2.0.0-beta.2",
         "prettier-init": "^1.1.0",
         "react": "^16.9.0",
         "react-bootstrap": "^1.0.0-beta.8",
