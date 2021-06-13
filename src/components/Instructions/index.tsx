@@ -7,7 +7,7 @@ import sidebar from "./img/sidebar.png";
 import importButton from "./img/importButton.png";
 import selectFile from "./img/selectFile.png";
 
-export const Instructions = () => {
+export const Instructions: React.FunctionComponent = () => {
     const [showHelp, setShowHelp] = React.useState(false);
 
     return (

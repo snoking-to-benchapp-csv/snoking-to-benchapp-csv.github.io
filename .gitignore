@@ -85,3 +85,4 @@ jspm_packages/
 out.csv
 build
 .parcel-cache
+.DS_Store

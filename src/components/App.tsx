@@ -5,7 +5,7 @@ import "./App.css";
 import { Nav } from "./Nav";
 import { TeamGettingPage } from "./TeamGettingPage";
 
-export const App = () => {
+export const App: React.FunctionComponent = () => {
     return (
         <>
             <Nav />

@@ -7,7 +7,7 @@ import { Instructions } from "./Instructions";
 
 import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
 
-export const TeamGettingPage = () => {
+export const TeamGettingPage: React.FunctionComponent = () => {
     const [teams, setTeams] = React.useState<null | TeamInfo>(null);
     React.useEffect(() => {
         getCurrentTeams().then((teams) => setTeams(teams));

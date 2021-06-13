@@ -16,7 +16,7 @@ function BenchAppGameToCSVRow(game: BenchAppGame): string {
         game.Duration,
         game.Location || "",
         game.Address || "",
-        game.Notes || ""
+        game.Notes || "",
     ];
 
     return fields.map((x) => `"${x}"`).join(",");

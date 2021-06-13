@@ -12,19 +12,20 @@ import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
-import Select, { ValueType } from "react-select";
+import Select from "react-select";
 
-import moment = require("moment");
+import moment from "moment";
 
 enum CSV_GENERATION_STATE {
     NOT_READY,
     LOADING,
-    READY
+    READY,
 }
 
 interface AppProps {
     teamInfo: TeamInfo;
 }
+
 interface AppState {
     csvGenerationState: CSV_GENERATION_STATE;
     errorString?: string;
@@ -33,35 +34,41 @@ interface AppState {
 
 export class DownloadPage extends React.Component<AppProps, AppState> {
     private blob: Blob | null = null;
-
     private setStatePromise(newState: Partial<AppState>) {
-        return new Promise((resolve) => {
-            this.setState(newState as any, () => {
+        return new Promise<void>((resolve) => {
+            this.setState({ ...this.state, ...newState }, () => {
                 resolve();
             });
         });
     }
-
     public state = {
         csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
         errorString: undefined,
-        newGamesOnly: true
+        newGamesOnly: true,
     };
-
-    private onUrlChange = (e: ValueType<{ value: { snokingUrl: string; teamId: string }; label: string }>) => {
+    private onUrlChange = (
+        e:
+            | {
+                  value: {
+                      snokingUrl: string;
+                      teamId: string;
+                  };
+                  label: string;
+              }
+            | undefined
+            | null
+    ) => {
         if (e && !Array.isArray(e)) {
-            const { snokingUrl, teamId } = (e as any).value;
+            const { snokingUrl, teamId } = e.value;
             this.updateCSV(snokingUrl, teamId);
         } else {
             throw new Error("react-select did something unexpected");
         }
     };
-
     private updateCSV = async (url: string, teamId: string) => {
         await this.setStatePromise({
-            csvGenerationState: CSV_GENERATION_STATE.LOADING
+            csvGenerationState: CSV_GENERATION_STATE.LOADING,
         });
-
         let snoKingSeasonData: SnokingGame[] = [];
         try {
             snoKingSeasonData = await getSnokingSeasonData(url);
@@ -69,13 +76,11 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
             console.error({ error: e });
             this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
-                errorString: "There was an issue getting the season data. Please try again later"
+                errorString: "There was an issue getting the season data. Please try again later",
             });
             return;
         }
-
         let csvData = "";
-
         try {
             csvData = BenchAppGamesToCSV(
                 snoKingSeasonData
@@ -91,19 +96,16 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
             console.error({ error: e });
             this.setState({
                 csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
-                errorString: "There was an issue parsing the season data. Please try again later"
+                errorString: "There was an issue parsing the season data. Please try again later",
             });
             return;
         }
-
         this.setState({
             csvGenerationState: CSV_GENERATION_STATE.READY,
-            errorString: undefined
+            errorString: undefined,
         });
-
         this.blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
     };
-
     private saveBlob = () => {
         if (this.blob === null) {
             throw new Error("Should have a blob by now");
@@ -111,15 +113,14 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         saveAs(this.blob, "schedule.csv");
     };
 
-    public render() {
+    public render(): React.ReactNode {
         const options = this.props.teamInfo.map(({ name, snokingUrl, teamId }) => ({
             value: { snokingUrl, teamId },
-            label: name
+            label: name,
         }));
         return (
             <div className="centeringDiv">
                 {this.state.errorString && <Alert variant="danger">{this.state.errorString}</Alert>}
-
                 <div style={{ width: "100%", padding: "0 1em 1em", maxWidth: "600px" }}>
                     <Select options={options} onChange={this.onUrlChange} placeholder="Scroll or type..." />
                 </div>
@@ -144,7 +145,6 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                         />
                     </div>
                 )}
-
                 {this.state.csvGenerationState === CSV_GENERATION_STATE.LOADING && <Spinner animation="border" />}
             </div>
         );
