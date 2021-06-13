@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "Snowking website data -> BenchApp CSV",
     "scripts": {
-        "start": "parcel dev.html",
+        "start": "parcel index.html",
         "lint": "eslint **\\*.ts* --quiet --fix",
         "build": "parcel build index.html --public-url / --out-dir build"
     },

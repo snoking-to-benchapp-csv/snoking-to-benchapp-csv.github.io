@@ -13,6 +13,7 @@ const RINKNAME_TO_ADDRESS: { [id: string]: string | null } = {
 };
 
 export function SnokingGameToBenchappGame(snokingGame: SnokingGame, teamId: string): BenchAppGame {
+    const isHome = teamId == `${snokingGame.teamHomeSeasonId}`;
     return {
         Type: "GAME",
         "Game Type": "REGULAR",
@@ -21,10 +22,8 @@ export function SnokingGameToBenchappGame(snokingGame: SnokingGame, teamId: stri
         Date: moment(snokingGame.dateTime).format(BENCH_APP_DATE_FORMAT_STRING),
         Time: snokingGame.time,
         Duration: "1:00",
-        Location:
-            teamId == `${snokingGame.teamHomeSeasonId}`
-                ? snokingGame.rinkName + " - Home"
-                : snokingGame.rinkName + " - Away",
-        Address: RINKNAME_TO_ADDRESS[snokingGame.rinkName] || undefined
+        Location: isHome ? snokingGame.rinkName + " - Home" : snokingGame.rinkName + " - Away",
+        Address: RINKNAME_TO_ADDRESS[snokingGame.rinkName] || undefined,
+        Notes: isHome ? "Light Jerseys" : "Dark Jerseys"
     };
 }
