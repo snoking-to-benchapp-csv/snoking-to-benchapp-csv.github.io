@@ -12,7 +12,7 @@ export const Nav: React.FunctionComponent = () => {
             <BootstrapNav variant="pills" fill className="justify-content-end" style={{ width: "100%" }}>
                 <Button
                     href="https://github.com/snoking-to-benchapp-csv/snoking-to-benchapp-csv.github.io"
-                    variant="info"
+                    variant="success"
                 >
                     GitHub
                 </Button>
