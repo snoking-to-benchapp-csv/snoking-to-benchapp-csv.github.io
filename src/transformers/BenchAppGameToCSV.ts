@@ -29,3 +29,24 @@ export function BenchAppGamesToCSV(games: BenchAppGame[]): string {
     ans += games.map(BenchAppGameToCSVRow).join(EOL);
     return ans;
 }
+
+function DBLGameToCSVRow(game: BenchAppGame): string {
+    const fields: string[] = [
+        game.Type,
+        game.Date,
+        game.Time,
+        "",
+        "",
+        game.Timezone,
+        "",
+        "",
+        game.Location || "" + game.Address || "",
+        "",
+        "",
+        "Yes",
+        "Yes",
+        ""
+    ];
+
+    return fields.map((x) => `"${x}"`).join(",");
+}
