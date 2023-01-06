@@ -11,7 +11,9 @@ import Form from "react-bootstrap/Form";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
+import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
+import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
 import Select from "react-select";
 
 import moment from "moment";
@@ -30,7 +32,7 @@ interface AppState {
     csvGenerationState: CSV_GENERATION_STATE;
     errorString?: string;
     newGamesOnly: boolean;
-    teamCowboy: boolean;
+    benchApp: boolean;
 }
 
 export class DownloadPage extends React.Component<AppProps, AppState> {
@@ -46,7 +48,7 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
         errorString: undefined,
         newGamesOnly: true,
-        teamCowboy: false,
+        benchApp: true,
     };
     private onUrlChange = (
         e:
@@ -84,16 +86,29 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         }
         let csvData = "";
         try {
-            csvData = BenchAppGamesToCSV(
-                snoKingSeasonData
-                    .filter(
-                        (n) =>
-                            !this.state.newGamesOnly ||
-                            moment(n.dateTime) >
-                                moment().subtract(1, "days") /* only games in the future with some fudge*/
-                    )
-                    .map((n) => SnokingGameToBenchappGame(n, teamId))
-            );
+            if (this.state.benchApp) {
+                csvData = BenchAppGamesToCSV(
+                    snoKingSeasonData
+                        .filter(
+                            (n) =>
+                                !this.state.newGamesOnly ||
+                                moment(n.dateTime) >
+                                    moment().subtract(1, "days") /* only games in the future with some fudge*/
+                        )
+                        .map((n) => SnokingGameToBenchappGame(n, teamId))
+                );
+            } else {
+                csvData = DBLGamesToCSV(
+                    snoKingSeasonData
+                        .filter(
+                            (n) =>
+                                !this.state.newGamesOnly ||
+                                moment(n.dateTime) >
+                                    moment().subtract(1, "days") /* only games in the future with some fudge*/
+                        )
+                        .map((n) => DBLGameToTeamCowboyGame(n, teamId))
+                );
+            }
         } catch (e) {
             console.error({ error: e });
             this.setState({
@@ -149,7 +164,7 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                             style={{ paddingTop: ".3em" }}
                             type="checkbox"
                             label="Team cowboy"
-                            onChange={() => this.setState({ teamCowboy: !this.state.teamCowboy })}
+                            onChange={() => this.setState({ benchApp: !this.state.benchApp })}
                         />
                     </div>
                 )}
