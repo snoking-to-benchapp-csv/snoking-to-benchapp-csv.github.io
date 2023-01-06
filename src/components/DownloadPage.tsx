@@ -10,10 +10,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
-// eslint-disable-next-line
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
-// eslint-disable-next-line
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
 import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
 import Select from "react-select";
