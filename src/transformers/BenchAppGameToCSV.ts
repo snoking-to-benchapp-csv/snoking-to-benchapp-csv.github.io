@@ -30,6 +30,7 @@ export function BenchAppGamesToCSV(games: BenchAppGame[]): string {
     return ans;
 }
 
+// eslint-disable-next-line
 function DBLGameToCSVRow(game: BenchAppGame): string {
     const fields: string[] = [
         game.Type,
@@ -37,7 +38,7 @@ function DBLGameToCSVRow(game: BenchAppGame): string {
         game.Time,
         "",
         "",
-        game.Timezone,
+        "US/Pacific",
         "",
         "",
         game.Location || "" + game.Address || "",
@@ -45,7 +46,7 @@ function DBLGameToCSVRow(game: BenchAppGame): string {
         "",
         "Yes",
         "Yes",
-        ""
+        "",
     ];
 
     return fields.map((x) => `"${x}"`).join(",");

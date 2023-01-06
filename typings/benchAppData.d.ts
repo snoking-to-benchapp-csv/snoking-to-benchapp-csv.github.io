@@ -62,5 +62,4 @@ export interface BenchAppGame {
      */
     Notes?: string;
 
-    Timezone: "US/Pacific";
 }

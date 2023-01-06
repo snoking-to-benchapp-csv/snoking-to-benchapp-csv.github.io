@@ -30,6 +30,7 @@ interface AppState {
     csvGenerationState: CSV_GENERATION_STATE;
     errorString?: string;
     newGamesOnly: boolean;
+    teamCowboy: boolean;
 }
 
 export class DownloadPage extends React.Component<AppProps, AppState> {
@@ -45,6 +46,7 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         csvGenerationState: CSV_GENERATION_STATE.NOT_READY,
         errorString: undefined,
         newGamesOnly: true,
+        teamCowboy: false,
     };
     private onUrlChange = (
         e:
