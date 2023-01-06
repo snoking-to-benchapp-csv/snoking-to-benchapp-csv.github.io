@@ -143,6 +143,12 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                             label="Include old games?"
                             onChange={() => this.setState({ newGamesOnly: !this.state.newGamesOnly })}
                         />
+                        <Form.Check
+                            style={{ paddingTop: ".3em" }}
+                            type="checkbox"
+                            label="Team cowboy"
+                            onChange={() => this.setState({ teamCowboy: !this.state.teamCowboy })}
+                        />
                     </div>
                 )}
                 {this.state.csvGenerationState === CSV_GENERATION_STATE.LOADING && <Spinner animation="border" />}
