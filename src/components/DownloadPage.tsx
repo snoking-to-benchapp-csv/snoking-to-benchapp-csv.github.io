@@ -86,28 +86,15 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
         }
         let csvData = "";
         try {
+            const dataByDates = snoKingSeasonData.filter(
+                (n) =>
+                    !this.state.newGamesOnly ||
+                    moment(n.dateTime) > moment().subtract(1, "days") /* only games in the future with some fudge*/
+            );
             if (this.state.benchApp) {
-                csvData = BenchAppGamesToCSV(
-                    snoKingSeasonData
-                        .filter(
-                            (n) =>
-                                !this.state.newGamesOnly ||
-                                moment(n.dateTime) >
-                                    moment().subtract(1, "days") /* only games in the future with some fudge*/
-                        )
-                        .map((n) => SnokingGameToBenchappGame(n, teamId))
-                );
+                csvData = BenchAppGamesToCSV(dataByDates.map((n) => SnokingGameToBenchappGame(n, teamId)));
             } else {
-                csvData = DBLGamesToCSV(
-                    snoKingSeasonData
-                        .filter(
-                            (n) =>
-                                !this.state.newGamesOnly ||
-                                moment(n.dateTime) >
-                                    moment().subtract(1, "days") /* only games in the future with some fudge*/
-                        )
-                        .map((n) => DBLGameToTeamCowboyGame(n, teamId))
-                );
+                csvData = DBLGamesToCSV(dataByDates.map((n) => DBLGameToTeamCowboyGame(n, teamId)));
             }
         } catch (e) {
             console.error({ error: e });
@@ -163,7 +150,7 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                         <Form.Check
                             style={{ paddingTop: ".3em" }}
                             type="checkbox"
-                            label="Team cowboy"
+                            label="Team cowboy?"
                             onChange={() => this.setState({ benchApp: !this.state.benchApp })}
                         />
                     </div>
