@@ -10,8 +10,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { SnokingGame } from "../../typings/snokingData";
+// eslint-disable-next-line
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
+// eslint-disable-next-line
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
 import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
 import Select from "react-select";
@@ -64,12 +66,12 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
     ) => {
         if (e && !Array.isArray(e)) {
             const { snokingUrl, teamId } = e.value;
-            this.updateCSV(snokingUrl, teamId);
+            this.updateCSV(snokingUrl, teamId, e.label);
         } else {
             throw new Error("react-select did something unexpected");
         }
     };
-    private updateCSV = async (url: string, teamId: string) => {
+    private updateCSV = async (url: string, teamId: string, label: string) => {
         await this.setStatePromise({
             csvGenerationState: CSV_GENERATION_STATE.LOADING,
         });
@@ -91,7 +93,7 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                     !this.state.newGamesOnly ||
                     moment(n.dateTime) > moment().subtract(1, "days") /* only games in the future with some fudge*/
             );
-            if (this.state.benchApp) {
+            if (!label.includes("DBHL")) {
                 csvData = BenchAppGamesToCSV(dataByDates.map((n) => SnokingGameToBenchappGame(n, teamId)));
             } else {
                 csvData = DBLGamesToCSV(dataByDates.map((n) => DBLGameToTeamCowboyGame(n, teamId)));
@@ -146,12 +148,6 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                             type="checkbox"
                             label="Include old games?"
                             onChange={() => this.setState({ newGamesOnly: !this.state.newGamesOnly })}
-                        />
-                        <Form.Check
-                            style={{ paddingTop: ".3em" }}
-                            type="checkbox"
-                            label="Team cowboy?"
-                            onChange={() => this.setState({ benchApp: !this.state.benchApp })}
                         />
                     </div>
                 )}
