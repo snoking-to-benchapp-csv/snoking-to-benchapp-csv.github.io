@@ -22,13 +22,17 @@ export const downloadCSV = async ({
     url: string;
     emit: EMIT_TYPES;
     teamId: string;
-}) => {
+}): Promise<void> => {
     let snoKingSeasonData: SnokingGame[] = [];
+    const lazyErrorAlert = () =>
+        alert("There was an issue processing the request. Try again later or email chris@chrisbenti.com");
+
     try {
         snoKingSeasonData = await getSnokingSeasonData(url);
     } catch (e) {
         console.error({ error: e });
-        // TODO: RETURN ERROR
+        //TODO: Better alert handling then just an ugly alert.
+        lazyErrorAlert();
         return;
     }
     let csvData = "";
@@ -45,7 +49,8 @@ export const downloadCSV = async ({
         }
     } catch (e) {
         console.error({ error: e });
-        // TODO: Error Handling in CSV
+        //TODO: Better alert handling then just an ugly alert.
+        lazyErrorAlert();
         return;
     }
 
