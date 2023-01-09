@@ -8,6 +8,10 @@ import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
 import { useEffect, useState } from "react";
 
 export const TeamGettingPage: React.FunctionComponent = () => {
+    // This page's entire job is to sit, wait for a list of the teams to be downloaded from
+    // SKAHL and then show the actual application.
+    // This way, all of the more complicated code can just assume the team info is available.
+    // TODO: This should have some sort of timeout that shows an error page so people aren't staring at it forever.
     const [teams, setTeams] = useState<null | TeamInfo>(null);
     useEffect(() => {
         getCurrentTeams().then((teams) => setTeams(teams));
