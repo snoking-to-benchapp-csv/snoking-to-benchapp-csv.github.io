@@ -27,6 +27,7 @@ export const downloadCSV = async ({
     const lazyErrorAlert = () =>
         alert("There was an issue processing the request. Try again later or email chris@chrisbenti.com");
 
+    // Step 1: Get all of the games for the team from the SnoKing site.
     try {
         snoKingSeasonData = await getSnokingSeasonData(url);
     } catch (e) {
@@ -35,6 +36,8 @@ export const downloadCSV = async ({
         lazyErrorAlert();
         return;
     }
+
+    // Step 2: Now that we have the games, convert them into a CSV format.
     let csvData = "";
     try {
         const dataByDates = snoKingSeasonData.filter(
@@ -54,6 +57,7 @@ export const downloadCSV = async ({
         return;
     }
 
+    // Step 3: Once we have everything in a CSV in browser memory, download as file to user's disk.
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
     saveAs(blob, "schedule.csv");
 };
