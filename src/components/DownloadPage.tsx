@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./App.css";
-
 import { saveAs } from "file-saver";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";

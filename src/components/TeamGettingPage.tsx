@@ -2,14 +2,15 @@ import * as React from "react";
 
 import Spinner from "react-bootstrap/Spinner";
 
-import { DownloadPage } from "./DownloadPage";
+import { DownloadPage } from "./DownloadPageV2";
 import { Instructions } from "./Instructions";
 
 import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
+import { useEffect, useState } from "react";
 
 export const TeamGettingPage: React.FunctionComponent = () => {
-    const [teams, setTeams] = React.useState<null | TeamInfo>(null);
-    React.useEffect(() => {
+    const [teams, setTeams] = useState<null | TeamInfo>(null);
+    useEffect(() => {
         getCurrentTeams().then((teams) => setTeams(teams));
     }, []);
     return (
