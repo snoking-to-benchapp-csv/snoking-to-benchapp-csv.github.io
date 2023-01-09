@@ -1,5 +1,8 @@
 import { BenchAppGame } from "../../typings/benchAppData";
-import { EOL } from "os";
+
+// Previously, this used OS EOL, which would be polyfilled.
+// The polyfill is very old and I'd rather not use so just gonna hard code for now.
+const EOL = "\n";
 
 const CSV_HEADER =
     "Type,Game Type,Title (Optional),Home,Away,Date,Time,Duration,Location (Optional),Address (Optional),Notes (Optional)";
