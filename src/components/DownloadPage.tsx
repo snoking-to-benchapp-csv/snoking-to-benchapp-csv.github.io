@@ -131,7 +131,6 @@ export class DownloadPage extends React.Component<AppProps, AppState> {
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <div className="button" style={{ paddingRight: "1em" }}>
                             <Button
-                                block
                                 variant="primary"
                                 disabled={this.state.csvGenerationState === CSV_GENERATION_STATE.NOT_READY}
                                 onClick={this.saveBlob}
