@@ -39,7 +39,7 @@ async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
 
 async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
     return (
-        (await get(`https://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
+        (await get(`http://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
             seasons: [{ name: string; id: number }];
         }
     ).seasons.map((x: { name: string; id: number }) => ({
