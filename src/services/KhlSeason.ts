@@ -9,25 +9,46 @@ interface AxiosResponse<T = any> {
 
 export async function getSnokingSeasonData(url: string): Promise<SnokingSeasonResponse> {
 
-axios.get(url).then((resp: AxiosResponse) => {
-    let jCalData = ical2json.convert(resp.data);
-    let games = jCalData.VCALENDAR[0].VEVENT;
-    let schedule = []
-    games.forEach(function(game) {
-        let teams = game.SUMMARY.split('-')[1].split('@');
-        var date = moment.tz(game.DTSTART, 'America/Chicago').format('MM/DD/YYYY');
-        let gameInfo = {
-            "dateTime": game.DTSTART,
-            "date": date,
-            "time": game.DESCRIPTION.split('-')[1].split("at")[0].trim(),
-            "rinkName": game.LOCATION,
-            "teamHomeName": teams[1].trim(),
-            "teamAwayName": teams[0].trim()
+    let schedule : SnokingSeasonResponse = [];
+
+    axios.get(url).then((resp: AxiosResponse) => {
+        let jCalData = ical2json.convert(resp.data);
+        let games = jCalData.VCALENDAR[0].VEVENT;
+        for (let i = 0; i < games.length; i++) {
+            let teams = games[i].SUMMARY.split('-')[1].split('@');
+            var date = moment.tz(games[i].DTSTART, 'America/Chicago').format('MM/DD/YYYY');
+            let gameInfo = {
+                "seasonId": 1,
+                "dateTime": games[i].DTSTART,
+                "date": date,
+                "day": "d",
+                "time": games[i].DESCRIPTION.split('-')[1].split("at")[0].trim(),
+                "rinkId": 1,
+                "rinkName": games[i].LOCATION,
+                "division": null,
+                "teamHomeId": 1,
+                "teamAwayId": 1,
+                "teamHomeName": teams[1].trim(),
+                "teamAwayName": teams[0].trim(),
+                "teamHomeNameStat": null,
+                "teamAwayNameStat": null,
+                "oponentName": "",
+                "scoreHome": 1,
+                "scoreAway": 1,
+                "score": "",
+                "isScoresheetSet": false,
+                "isRosterSet": false,
+                "scoresheet": null,
+                "teamHomeSeasonId": 1,
+                "teamAwaySeasonId": 1,
+                "id": 1,
+                "isNew": false,
+                "lastError": null
+            }
+            schedule.push(gameInfo)
         }
-        schedule.push(gameInfo)
-    })
-});
+    });
     
     
-    return (await get(url)) as SnokingSeasonResponse;
+    return schedule;
 }
