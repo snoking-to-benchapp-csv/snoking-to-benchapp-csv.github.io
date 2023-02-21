@@ -15,9 +15,9 @@ export async function getSnokingSeasonData(url: string): Promise<SnokingSeasonRe
         let jCalData = ical2json.convert(resp.data);
         let games = jCalData.VCALENDAR[0].VEVENT;
         for (let i = 0; i < games.length; i++) {
-            let teams = games[i].SUMMARY.split('-')[1].split('@');
-            var date = moment.tz(games[i].DTSTART, 'America/Chicago').format('MM/DD/YYYY');
-            let gameInfo = {
+            const teams = games[i].SUMMARY.split('-')[1].split('@');
+            const date = moment.tz(games[i].DTSTART, 'America/Chicago').format('MM/DD/YYYY');
+            const gameInfo = {
                 "seasonId": 1,
                 "dateTime": games[i].DTSTART,
                 "date": date,
