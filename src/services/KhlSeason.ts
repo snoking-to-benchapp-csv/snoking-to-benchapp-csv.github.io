@@ -7,7 +7,7 @@ interface AxiosResponse<T = any> {
     data: string
 }
 
-export async function getSnokingSeasonData(url: string): Promise<SnokingSeasonResponse> {
+export async function getKhlSeasonData(url: string): Promise<SnokingSeasonResponse> {
 
     let schedule : SnokingSeasonResponse = [];
 
@@ -48,7 +48,6 @@ export async function getSnokingSeasonData(url: string): Promise<SnokingSeasonRe
             schedule.push(gameInfo)
         }
     });
-    
     
     return schedule;
 }

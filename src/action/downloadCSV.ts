@@ -6,6 +6,7 @@ import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
 import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
 import { saveAs } from "file-saver";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
+import { getKhlSeasonData } from "../services/KhlSeason";
 
 export enum EMIT_TYPES {
     BENCH_APP,

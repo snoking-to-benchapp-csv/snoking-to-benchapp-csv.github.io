@@ -20,7 +20,7 @@ export interface SnokingGame {
     time: string;
     rinkId: number;
     rinkName: string;
-    division: string;
+    division: string | null;
     teamHomeId: number;
     teamAwayId: number;
     teamHomeName: string;
