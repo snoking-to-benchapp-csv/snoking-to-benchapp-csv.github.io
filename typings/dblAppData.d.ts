@@ -42,4 +42,6 @@ export interface DBLGame {
      * If your team is home or away
      */
     HomeOrAway: "Home" | "Away"; 
+
+    rinkName: string;
 }

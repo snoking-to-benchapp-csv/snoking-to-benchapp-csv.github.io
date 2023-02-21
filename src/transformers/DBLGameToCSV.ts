@@ -17,7 +17,7 @@ function DBLGameToCSVRow(game: DBLGame): string {
         "US/Pacific",
         game.HomeOrAway,
         game.Title || "",
-        "Snoking Renton",
+        game.rinkName,
         "",
         "",
         "Yes",
