@@ -18,7 +18,7 @@ const RINK_NAME_TO_ADDRESS: { [id: string]: string | null } = {
     "Olympic View Arena": "22202 70th Ave W, Mountlake Terrace, WA 98043",
     "Lynnwood Ice Center": "19803 68th Ave W, Lynnwood, WA 98036",
     "Everett Comm Ice Rink": "2000 Hewitt Ave, Everett, WA 98201",
-    "Angel of the Winds Arena": "2000 Hewitt Ave, Everett, WA 98201"
+    "Angel of the Winds Arena": "2000 Hewitt Ave, Everett, WA 98201",
 };
 
 export function SnokingGameToBenchappGame(snokingGame: SnokingGame, teamId: string): BenchAppGame {

@@ -1,12 +1,11 @@
 import moment from "moment";
 import { SnokingGame } from "../../typings/snokingData";
-import { getSnokingSeasonData } from "../services/SnokingSeason";
+import { getKhlSeasonData } from "../services/KhlSeason";
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
 import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
 import { saveAs } from "file-saver";
 import { SnokingGameToBenchappGame } from "../transformers/SnokingGameToBenchappGame";
-import { getKhlSeasonData } from "../services/KhlSeason";
 
 export enum EMIT_TYPES {
     BENCH_APP,
@@ -30,7 +29,8 @@ export const downloadCSV = async ({
 
     // Step 1: Get all of the games for the team from the SnoKing site.
     try {
-        snoKingSeasonData = await getSnokingSeasonData(url);
+        snoKingSeasonData = await getKhlSeasonData(url);
+        console.log(snoKingSeasonData);
     } catch (e) {
         console.error({ error: e });
         //TODO: Better alert handling then just an ugly alert.
@@ -42,10 +42,9 @@ export const downloadCSV = async ({
     let csvData = "";
     try {
         const dataByDates = snoKingSeasonData.filter(
-            (n) =>
-                !newGamesOnly ||
-                moment(n.dateTime) > moment().subtract(1, "days") /* only games in the future with some fudge*/
+            (n) => moment(n.dateTime) > moment().subtract(1, "days") /* only games in the future with some fudge*/
         );
+        console.log(dataByDates);
         if (emit == EMIT_TYPES.BENCH_APP) {
             csvData = BenchAppGamesToCSV(dataByDates.map((n) => SnokingGameToBenchappGame(n, teamId)));
         } else {

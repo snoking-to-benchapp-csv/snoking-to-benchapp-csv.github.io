@@ -12,5 +12,6 @@ export function DBLGameToTeamCowboyGame(snokingGame: SnokingGame, teamId: string
         Time: snokingGame.time,
         Title: isHome ? snokingGame.teamAwayName : snokingGame.teamHomeName,
         HomeOrAway: isHome ? "Home" : "Away",
+        rinkName: snokingGame.rinkName,
     };
 }

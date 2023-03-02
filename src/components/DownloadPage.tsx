@@ -1,4 +1,4 @@
-import { TeamInfo } from "../services/CurrentTeams";
+import { TeamInfo } from "../services/CurrentKHLTeams";
 import { PickTeam, SelectedTeamInfo } from "./PickTeam";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";

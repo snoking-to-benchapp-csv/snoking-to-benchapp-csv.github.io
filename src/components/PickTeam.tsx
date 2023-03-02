@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { TeamInfo } from "../services/CurrentTeams";
+import { TeamInfo } from "../services/CurrentKHLTeams";
 import Select from "react-select";
 export interface SelectedTeamInfo {
     snokingUrl: string;
