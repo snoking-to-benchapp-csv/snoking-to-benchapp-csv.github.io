@@ -21,12 +21,12 @@ export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo }> = ({ 
 
     const executeDownload = (type: EMIT_TYPES) => {
         downloadCSV({
-            newGamesOnly: true,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             url: selectedInfo!.snokingUrl,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             teamId: selectedInfo!.teamId,
             emit: type,
+            name: selectedInfo!.name,
         });
     };
 

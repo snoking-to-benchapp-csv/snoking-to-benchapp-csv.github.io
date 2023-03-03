@@ -4,6 +4,7 @@ import Select from "react-select";
 export interface SelectedTeamInfo {
     snokingUrl: string;
     teamId: string;
+    name: string;
 }
 
 export const PickTeam: React.FC<{
@@ -34,7 +35,8 @@ export const PickTeam: React.FC<{
     ) => {
         if (e && !Array.isArray(e)) {
             const { snokingUrl, teamId } = e.value;
-            onTeamSelected({ snokingUrl, teamId });
+            const name = e.label;
+            onTeamSelected({ snokingUrl, teamId, name });
             // this.updateCSV(snokingUrl, teamId, e.label);
         } else {
             throw new Error("react-select did something unexpected");

@@ -34,7 +34,7 @@ export interface SnokingGame {
     isScoresheetSet: boolean;
     isRosterSet: boolean;
     scoresheet: unknown | null;
-    teamHomeSeasonId: number;
+    teamHomeSeasonId: number | string;
     teamAwaySeasonId: number;
     id: number;
     isNew: boolean;

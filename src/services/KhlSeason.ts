@@ -3,21 +3,23 @@ import { convert } from "ical2json";
 import axios from "axios";
 import moment from "moment-timezone";
 
-interface AxiosResponse<T = any> {
+interface AxiosResponse {
     data: string;
 }
 
-export async function getKhlSeasonData(url: string): Promise<SnokingSeasonResponse> {
+export async function getKhlSeasonData(url: string, name: string): Promise<SnokingSeasonResponse> {
     const schedule: SnokingSeasonResponse = [];
 
-    axios.get(url).then((resp: AxiosResponse) => {
+    await axios.get(`https://corsproxy.io/?http://krakenhockeyleague.com/ical/${url}`).then((resp: AxiosResponse) => {
         const jCalData = convert(resp.data);
         const games = jCalData.VCALENDAR[0].VEVENT;
         for (let i = 0; i < games.length; i++) {
             const teams = games[i].SUMMARY.split("-")[1].split("@");
+            const isHome = teams[1].trim() == name;
             const date = moment.tz(games[i].DTSTART, "America/Chicago").format("MM/DD/YYYY");
             const dateTime = moment.tz(games[i].DTSTART, "America/Chicago").format("YYYY-MM-DDTHH:mm:SS");
             const gameInfo = {
+                id: i,
                 seasonId: 1,
                 dateTime: dateTime,
                 date: date,
@@ -35,13 +37,12 @@ export async function getKhlSeasonData(url: string): Promise<SnokingSeasonRespon
                 oponentName: "",
                 scoreHome: null,
                 scoreAway: null,
-                score: "",
+                score: null,
                 isScoresheetSet: false,
                 isRosterSet: false,
                 scoresheet: null,
-                teamHomeSeasonId: 1,
+                teamHomeSeasonId: isHome ? url : 1,
                 teamAwaySeasonId: 1,
-                id: 1,
                 isNew: false,
                 lastError: null,
             };

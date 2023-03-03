@@ -19,7 +19,7 @@ export async function getCurrentKHLTeams(): Promise<TeamInfo> {
             const teamData = {
                 name: teamNames[i].text,
                 teamId: teamId,
-                snokingUrl: `https://corsproxy.io/?http://krakenhockeyleague.com/ical/${teamId}`,
+                snokingUrl: teamId,
             };
             teams.push(teamData);
         }
