@@ -32,11 +32,7 @@ export const downloadCSV = async ({
 
     // Step 1: Get all of the games for the team from the SnoKing site.
     try {
-        if (isSnoking) {
-            snoKingSeasonData = await getSnokingSeasonData(url);
-        } else {
-            snoKingSeasonData = await getKhlSeasonData(url, name);
-        }
+        snoKingSeasonData = isSnoking ? await getSnokingSeasonData(url) : await getKhlSeasonData(url, name, teamId);
     } catch (e) {
         console.error({ error: e });
         //TODO: Better alert handling then just an ugly alert.

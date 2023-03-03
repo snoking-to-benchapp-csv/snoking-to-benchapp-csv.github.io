@@ -7,10 +7,10 @@ interface AxiosResponse {
     data: string;
 }
 
-export async function getKhlSeasonData(url: string, name: string): Promise<SnokingSeasonResponse> {
+export async function getKhlSeasonData(url: string, name: string, teamId: string): Promise<SnokingSeasonResponse> {
     const schedule: SnokingSeasonResponse = [];
 
-    await axios.get(`https://corsproxy.io/?http://krakenhockeyleague.com/ical/${url}`).then((resp: AxiosResponse) => {
+    await axios.get(`https://corsproxy.io/?${url}`).then((resp: AxiosResponse) => {
         const jCalData = convert(resp.data);
         const games = jCalData.VCALENDAR[0].VEVENT;
         for (let i = 0; i < games.length; i++) {
@@ -41,7 +41,7 @@ export async function getKhlSeasonData(url: string, name: string): Promise<Snoki
                 isScoresheetSet: false,
                 isRosterSet: false,
                 scoresheet: null,
-                teamHomeSeasonId: isHome ? url : 1,
+                teamHomeSeasonId: isHome ? teamId : 1,
                 teamAwaySeasonId: 1,
                 isNew: false,
                 lastError: null,
