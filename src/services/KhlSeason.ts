@@ -14,8 +14,8 @@ export async function getKhlSeasonData(url: string, name: string): Promise<Snoki
         const jCalData = convert(resp.data);
         const games = jCalData.VCALENDAR[0].VEVENT;
         for (let i = 0; i < games.length; i++) {
-            const teams = games[i].SUMMARY.split("-")[1].split("@");
-            const isHome = teams[1].trim() == name;
+            const teams = games[i].SUMMARY.split(" - ")[1].split("@");
+            const isHome = teams[1].trim() == name.slice(6);
             const date = moment.tz(games[i].DTSTART, "America/Chicago").format("MM/DD/YYYY");
             const dateTime = moment.tz(games[i].DTSTART, "America/Chicago").format("YYYY-MM-DDTHH:mm:SS");
             const gameInfo = {
@@ -24,7 +24,7 @@ export async function getKhlSeasonData(url: string, name: string): Promise<Snoki
                 dateTime: dateTime,
                 date: date,
                 day: "d",
-                time: games[i].DESCRIPTION.split("-")[1].split("at")[0].trim(),
+                time: games[i].DESCRIPTION.split(" - ")[1].split("at")[0].trim(),
                 rinkId: 1,
                 rinkName: games[i].LOCATION,
                 division: null,

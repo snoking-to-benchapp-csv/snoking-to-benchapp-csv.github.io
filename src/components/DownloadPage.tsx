@@ -26,7 +26,9 @@ export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo }> = ({ 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             teamId: selectedInfo!.teamId,
             emit: type,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             name: selectedInfo!.name,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             isSnoking: selectedInfo!.isSnoking,
         });
     };
