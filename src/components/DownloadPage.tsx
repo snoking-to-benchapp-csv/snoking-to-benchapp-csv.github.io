@@ -1,4 +1,4 @@
-import { TeamInfo } from "../services/CurrentKHLTeams";
+import { TeamInfo } from "../services/CurrentTeams";
 import { PickTeam, SelectedTeamInfo } from "./PickTeam";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
@@ -27,6 +27,7 @@ export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo }> = ({ 
             teamId: selectedInfo!.teamId,
             emit: type,
             name: selectedInfo!.name,
+            isSnoking: selectedInfo!.isSnoking,
         });
     };
 

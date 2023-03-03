@@ -1,6 +1,7 @@
 import moment from "moment";
 import { SnokingGame } from "../../typings/snokingData";
 import { getKhlSeasonData } from "../services/KhlSeason";
+import { getSnokingSeasonData } from "../services/SnokingSeason";
 import { BenchAppGamesToCSV } from "../transformers/BenchAppGameToCSV";
 import { DBLGamesToCSV } from "../transformers/DBLGameToCSV";
 import { DBLGameToTeamCowboyGame } from "../transformers/DBLGameToTeamCowboyGame";
@@ -17,11 +18,13 @@ export const downloadCSV = async ({
     emit,
     teamId,
     name,
+    isSnoking,
 }: {
     url: string;
     emit: EMIT_TYPES;
     teamId: string;
     name: string;
+    isSnoking: boolean;
 }): Promise<void> => {
     let snoKingSeasonData: SnokingGame[] = [];
     const lazyErrorAlert = () =>
@@ -29,7 +32,11 @@ export const downloadCSV = async ({
 
     // Step 1: Get all of the games for the team from the SnoKing site.
     try {
-        snoKingSeasonData = await getKhlSeasonData(url, name);
+        if (isSnoking) {
+            snoKingSeasonData = await getSnokingSeasonData(url);
+        } else {
+            snoKingSeasonData = await getKhlSeasonData(url, name);
+        }
     } catch (e) {
         console.error({ error: e });
         //TODO: Better alert handling then just an ugly alert.

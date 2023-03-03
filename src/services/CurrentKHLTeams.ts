@@ -20,6 +20,7 @@ export async function getCurrentKHLTeams(): Promise<TeamInfo> {
                 name: teamNames[i].text,
                 teamId: teamId,
                 snokingUrl: teamId,
+                isSnoking: false,
             };
             teams.push(teamData);
         }

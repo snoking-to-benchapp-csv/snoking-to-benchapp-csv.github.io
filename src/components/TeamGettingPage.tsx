@@ -4,7 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { DownloadPage } from "./DownloadPage";
 
-import { getCurrentKHLTeams, TeamInfo } from "../services/CurrentKHLTeams";
+import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
 import { useEffect, useState } from "react";
 
 export const TeamGettingPage: React.FunctionComponent = () => {
@@ -14,7 +14,7 @@ export const TeamGettingPage: React.FunctionComponent = () => {
     // TODO: This should have some sort of timeout that shows an error page so people aren't staring at it forever.
     const [teams, setTeams] = useState<null | TeamInfo>(null);
     useEffect(() => {
-        getCurrentKHLTeams().then((teams) => setTeams(teams));
+        getCurrentTeams().then((teams) => setTeams(teams));
     }, []);
     return (
         <>
