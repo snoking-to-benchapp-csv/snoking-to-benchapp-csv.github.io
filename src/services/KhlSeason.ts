@@ -16,15 +16,14 @@ export async function getKhlSeasonData(url: string, name: string, teamId: string
         for (let i = 0; i < games.length; i++) {
             const teams = games[i].SUMMARY.split(" - ")[1].split("@");
             const isHome = teams[1].trim() == name.slice(6);
-            const date = moment.tz(games[i].DTSTART, "America/Chicago").format("MM/DD/YYYY");
-            const dateTime = moment.tz(games[i].DTSTART, "America/Chicago").format("YYYY-MM-DDTHH:mm:SS");
+            const dt = moment.tz(games[i].DTSTART, "America/Chicago");
             const gameInfo = {
                 id: i,
                 seasonId: 1,
-                dateTime: dateTime,
-                date: date,
-                day: "d",
-                time: games[i].DESCRIPTION.split(" - ")[1].split("at")[0].trim(),
+                dateTime: dt.format("YYYY-MM-DDTHH:mm:SS"),
+                date: dt.format("MM/DD/YYYY"),
+                day: dt.format("dddd").substring(0, 3),
+                time: dt.format("hh:mm:SS A"),
                 rinkId: 1,
                 rinkName: games[i].LOCATION,
                 division: null,
