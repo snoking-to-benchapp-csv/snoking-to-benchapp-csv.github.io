@@ -4,6 +4,8 @@ import Select from "react-select";
 export interface SelectedTeamInfo {
     snokingUrl: string;
     teamId: string;
+    name: string;
+    isSnoking: boolean;
 }
 
 export const PickTeam: React.FC<{
@@ -13,8 +15,8 @@ export const PickTeam: React.FC<{
 }> = ({ teamInfo, className, onTeamSelected }) => {
     const options = useMemo(
         () =>
-            teamInfo.map(({ name, snokingUrl, teamId }) => ({
-                value: { snokingUrl, teamId },
+            teamInfo.map(({ name, snokingUrl, teamId, isSnoking }) => ({
+                value: { snokingUrl, teamId, isSnoking },
                 label: name,
             })),
         [teamInfo]
@@ -26,6 +28,7 @@ export const PickTeam: React.FC<{
                   value: {
                       snokingUrl: string;
                       teamId: string;
+                      isSnoking: boolean;
                   };
                   label: string;
               }
@@ -33,8 +36,9 @@ export const PickTeam: React.FC<{
             | null
     ) => {
         if (e && !Array.isArray(e)) {
-            const { snokingUrl, teamId } = e.value;
-            onTeamSelected({ snokingUrl, teamId });
+            const { snokingUrl, teamId, isSnoking } = e.value;
+            const name = e.label;
+            onTeamSelected({ snokingUrl, teamId, name, isSnoking });
             // this.updateCSV(snokingUrl, teamId, e.label);
         } else {
             throw new Error("react-select did something unexpected");
