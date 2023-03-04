@@ -96,12 +96,32 @@ async function getPondSeasonCurrentTeams(): Promise<
     });
 }
 
-export async function getCurrentTeams(): Promise<TeamInfo> {
+export async function getCurrentTeams(): Promise<{
+    teams: TeamInfo;
+    errors: string[];
+}> {
+    const safelyGetTeams = async (getter: () => Promise<TeamInfo>, leagueName: string) => {
+        try {
+            const data = await getter();
+            return {
+                data,
+                error: null,
+            };
+        } catch {
+            return {
+                data: [] as TeamInfo,
+                error: leagueName,
+            };
+        }
+    };
     const seasonData = await Promise.all([
-        getFiveVFiveCurrentTeams(),
-        getFiveVFiveCurrentTeams(1),
-        getPondSeasonCurrentTeams(),
-        getCurrentKHLTeams(),
+        safelyGetTeams(() => getFiveVFiveCurrentTeams(), "SKAHL 5v5"),
+        safelyGetTeams(() => getFiveVFiveCurrentTeams(1), "SKAHL 5v5"),
+        safelyGetTeams(() => getPondSeasonCurrentTeams(), "SKAHL Pond"),
+        safelyGetTeams(() => getCurrentKHLTeams(), "KHL"),
     ]);
-    return seasonData.reduce((a, b) => a.concat(b));
+    return {
+        teams: seasonData.map((x) => x.data).reduce((a, b) => a.concat(b)),
+        errors: seasonData.map((x) => x.error).filter((a) => a != null) as string[],
+    };
 }
