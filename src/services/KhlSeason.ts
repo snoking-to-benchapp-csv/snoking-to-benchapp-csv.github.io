@@ -33,7 +33,7 @@ export async function getKhlSeasonData(url: string, name: string, teamId: string
                 teamAwayName: teams[0].trim(),
                 teamHomeNameStat: null,
                 teamAwayNameStat: null,
-                oponentName: "",
+                opponentName: "",
                 scoreHome: null,
                 scoreAway: null,
                 score: null,

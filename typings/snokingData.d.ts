@@ -27,7 +27,7 @@ export interface SnokingGame {
     teamAwayName: string;
     teamHomeNameStat: unknown | null;
     teamAwayNameStat: unknown | null;
-    oponentName: unknown | null;
+    opponentName: unknown | null;
     scoreHome: number | null;
     scoreAway: number | null;
     score: unknown | null;
