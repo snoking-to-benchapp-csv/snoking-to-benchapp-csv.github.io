@@ -6,7 +6,6 @@ import { DownloadPage } from "./DownloadPage";
 
 import { getCurrentTeams, TeamInfo } from "../services/CurrentTeams";
 import { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap";
 
 export const TeamGettingPage: React.FunctionComponent = () => {
     // This page's entire job is to sit, wait for a list of the teams to be downloaded from
