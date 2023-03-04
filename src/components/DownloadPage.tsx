@@ -2,7 +2,7 @@ import { TeamInfo } from "../services/CurrentTeams";
 import { PickTeam, SelectedTeamInfo } from "./PickTeam";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { useMemo, useState } from "react";
+import { ReactElement, useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { downloadCSV, EMIT_TYPES } from "../action/downloadCSV";
 import { Alert } from "react-bootstrap";
@@ -16,7 +16,7 @@ const Step = styled.div`
     margin: 0.5em 0;
 `;
 
-export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo; errors: string[] }> = ({
+export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo; errors: ReactElement[] }> = ({
     teamInfo,
     errors,
 }) => {
@@ -46,23 +46,21 @@ export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo; errors:
                 align-items: center;
             `}
         >
-            {errors.length > 0 && (
-                <Alert
-                    className={css`
-                        margin: 1em;
-                        width: 100%;
-                        max-width: 600px;
-                        text-align: center;
-                    `}
-                    variant="danger"
-                >
-                    <div>There was an issue getting data for the following leagues:</div>
-                    <div>
-                        <b>{errors.join(",")}</b>
-                    </div>
-                    <div>Please try again later if you require data for that league.</div>
-                </Alert>
-            )}
+            {errors.length > 0 &&
+                errors.map((error, i) => (
+                    <Alert
+                        key={i}
+                        className={css`
+                            margin: 1em;
+                            width: 100%;
+                            max-width: 600px;
+                            text-align: center;
+                        `}
+                        variant="danger"
+                    >
+                        {error}
+                    </Alert>
+                ))}
             <Step>
                 <PickTeam
                     className={css`

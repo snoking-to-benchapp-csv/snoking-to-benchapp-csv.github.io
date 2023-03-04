@@ -1,6 +1,6 @@
 import { get } from "../interfaces/network";
-import axios from "axios";
 import JSSoup from "jssoup";
+import React, { ReactElement } from "react";
 
 export type TeamInfo = Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>;
 
@@ -10,22 +10,22 @@ interface AxiosResponse {
 
 async function getCurrentKHLTeams(): Promise<TeamInfo> {
     const teams: TeamInfo = [];
-    await axios.get(`https://corsproxy.io/?https://krakenhockeyleague.com/teams`).then((resp: AxiosResponse) => {
-        const soup = new JSSoup(resp.data);
-        const teamNames = soup.findAll("div", "p1");
-        for (let i = 0; i < teamNames.length; i++) {
-            const div = teamNames[i].findNextSibling("div");
-            const link = div.find("a");
-            const teamId = link.attrs.href.replace(/\D/g, "");
-            const teamData = {
-                name: `KHL - ${teamNames[i].text}`,
-                teamId: teamId,
-                snokingUrl: `http://krakenhockeyleague.com/ical/${teamId}`,
-                isSnoking: false,
-            };
-            teams.push(teamData);
-        }
-    });
+    const resp = (await get(`https://krakenhockeyleague.com/teams`)) as AxiosResponse;
+
+    const soup = new JSSoup(resp.data);
+    const teamNames = soup.findAll("div", "p1");
+    for (let i = 0; i < teamNames.length; i++) {
+        const div = teamNames[i].findNextSibling("div");
+        const link = div.find("a");
+        const teamId = link.attrs.href.replace(/\D/g, "");
+        const teamData = {
+            name: `KHL - ${teamNames[i].text}`,
+            teamId: teamId,
+            snokingUrl: `http://krakenhockeyleague.com/ical/${teamId}`,
+            isSnoking: false,
+        };
+        teams.push(teamData);
+    }
     return teams;
 }
 
@@ -98,9 +98,9 @@ async function getPondSeasonCurrentTeams(): Promise<
 
 export async function getCurrentTeams(): Promise<{
     teams: TeamInfo;
-    errors: string[];
+    errors: ReactElement[];
 }> {
-    const safelyGetTeams = async (getter: () => Promise<TeamInfo>, leagueName: string) => {
+    const safelyGetTeams = async (getter: () => Promise<TeamInfo>, errorMessage: ReactElement) => {
         try {
             const data = await getter();
             return {
@@ -110,18 +110,44 @@ export async function getCurrentTeams(): Promise<{
         } catch {
             return {
                 data: [] as TeamInfo,
-                error: leagueName,
+                error: errorMessage,
             };
         }
     };
+
     const seasonData = await Promise.all([
-        safelyGetTeams(() => getFiveVFiveCurrentTeams(), "SKAHL 5v5"),
-        safelyGetTeams(() => getFiveVFiveCurrentTeams(1), "SKAHL 5v5"),
-        safelyGetTeams(() => getPondSeasonCurrentTeams(), "SKAHL Pond"),
-        safelyGetTeams(() => getCurrentKHLTeams(), "KHL"),
+        safelyGetTeams(
+            () => getFiveVFiveCurrentTeams(),
+            <>
+                <b>SKAHL 5v5</b> data is not currently available. Please try again later if you require data for that
+                league.
+            </>
+        ),
+        safelyGetTeams(
+            () => getFiveVFiveCurrentTeams(1),
+            <>
+                <b>SKAHL 5v5</b> data is not currently available. Please try again later if you require data for that
+                league..
+            </>
+        ),
+        safelyGetTeams(
+            () => getPondSeasonCurrentTeams(),
+            <>
+                <b>SKAHL Pond</b> data is not currently available. Please try again later if you require data for that
+                league.
+            </>
+        ),
+        safelyGetTeams(
+            () => getCurrentKHLTeams(),
+            <>
+                <b>Kraken Hockey League</b> data is not available. If you require data for that league, and{" "}
+                <a href="https://krakenhockeyleague.com/">https://krakenhockeyleague.com/</a> is down, please try again
+                later.
+            </>
+        ),
     ]);
     return {
         teams: seasonData.map((x) => x.data).reduce((a, b) => a.concat(b)),
-        errors: seasonData.map((x) => x.error).filter((a) => a != null) as string[],
+        errors: seasonData.map((x) => x.error).filter((a) => a != null) as ReactElement[],
     };
 }

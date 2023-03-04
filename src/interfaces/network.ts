@@ -10,5 +10,6 @@ export const get = async (url: string): Promise<unknown> =>
             headers: {
                 accept: "application/json, text/plain, */*",
             },
+            timeout: 10000,
         })
     ).data;
