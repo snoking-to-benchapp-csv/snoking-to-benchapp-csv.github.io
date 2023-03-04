@@ -4,7 +4,7 @@ import JSSoup from "jssoup";
 
 export type TeamInfo = Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>;
 
-interface AxiosResonse {
+interface AxiosResponse {
     data: string;
 }
 
