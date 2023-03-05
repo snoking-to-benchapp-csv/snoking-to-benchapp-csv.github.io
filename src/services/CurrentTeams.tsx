@@ -4,7 +4,7 @@ import React, { ReactElement } from "react";
 
 export type TeamInfo = Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>;
 
-async function getCurrentKHLTeams(): Promise<TeamInfo> {
+export async function getCurrentKHLTeams(): Promise<TeamInfo> {
     const teams: TeamInfo = [];
     const resp = (await get(`https://krakenhockeyleague.com/teams`)) as string;
 
@@ -25,7 +25,7 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
     return teams;
 }
 
-async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }>> {
+export async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }>> {
     return (
         (await get(`https://snokinghockeyleague.com/api/season/all/0?v=1021270`)) as {
             seasons: [
@@ -41,7 +41,7 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
     }));
 }
 
-async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
+export async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
     const { id, name: seasonName } = (await getFiveVFiveSeasons())[index];
 
     return (
@@ -61,7 +61,7 @@ async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
     }));
 }
 
-async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
+export async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
     return (
         (await get(`http://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
             seasons: [{ name: string; id: number }];
@@ -72,7 +72,7 @@ async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
     }));
 }
 
-async function getPondSeasonCurrentTeams(): Promise<
+export async function getPondSeasonCurrentTeams(): Promise<
     Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>
 > {
     const { id, name: seasonName } = (await getPondSeasons())[0];
