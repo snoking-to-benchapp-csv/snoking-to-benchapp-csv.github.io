@@ -12,7 +12,7 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
     const teams: TeamInfo = [];
     const resp = (await get(`https://krakenhockeyleague.com/teams`)) as AxiosResponse;
 
-    const soup = new JSSoup(resp.data);
+    const soup = new JSSoup(resp);
     const teamNames = soup.findAll("div", "p1");
     for (let i = 0; i < teamNames.length; i++) {
         const div = teamNames[i].findNextSibling("div");
@@ -42,7 +42,6 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
     ).seasons.map((x: { name: string; id: number }) => ({
         name: x.name,
         id: x.id,
-        isSnoking: true,
     }));
 }
 
