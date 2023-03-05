@@ -12,7 +12,7 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
     const teams: TeamInfo = [];
     const resp = (await get(`https://krakenhockeyleague.com/teams`)) as AxiosResponse;
 
-    const soup = new JSSoup(resp.data);
+    const soup = new JSSoup(resp);
     const teamNames = soup.findAll("div", "p1");
     for (let i = 0; i < teamNames.length; i++) {
         const div = teamNames[i].findNextSibling("div");
