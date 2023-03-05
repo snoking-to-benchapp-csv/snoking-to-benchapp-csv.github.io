@@ -42,7 +42,6 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
     ).seasons.map((x: { name: string; id: number }) => ({
         name: x.name,
         id: x.id,
-        isSnoking: true,
     }));
 }
 
