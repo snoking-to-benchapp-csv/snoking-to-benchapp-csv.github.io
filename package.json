@@ -61,5 +61,8 @@
             "react-app",
             "react-app/jest"
         ]
+    },
+    "jest": {
+        "testEnvironment": "node"
     }
 }
