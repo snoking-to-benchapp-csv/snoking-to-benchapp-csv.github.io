@@ -4,13 +4,9 @@ import React, { ReactElement } from "react";
 
 export type TeamInfo = Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>;
 
-interface AxiosResponse {
-    data: string;
-}
-
 async function getCurrentKHLTeams(): Promise<TeamInfo> {
     const teams: TeamInfo = [];
-    const resp = (await get(`https://krakenhockeyleague.com/teams`)) as AxiosResponse;
+    const resp = (await get(`https://krakenhockeyleague.com/teams`)) as string;
 
     const soup = new JSSoup(resp);
     const teamNames = soup.findAll("div", "p1");
