@@ -17,7 +17,7 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
         const teamData = {
             name: `KHL - ${teamNames[i].text}`,
             teamId: teamId,
-            snokingUrl: `http://krakenhockeyleague.com/ical/${teamId}`,
+            snokingUrl: `https://krakenhockeyleague.com/ical/${teamId}`,
             isSnoking: false,
         };
         teams.push(teamData);
