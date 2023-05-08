@@ -26,7 +26,7 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
 }
 
 async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }>> {
-    return (
+    const ans = (
         (await get(`https://snokinghockeyleague.com/api/season/all/0?v=1021270`)) as {
             seasons: [
                 {
@@ -39,11 +39,11 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
         name: x.name,
         id: x.id,
     }));
+    console.log({ ans });
+    return ans;
 }
 
-async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
-    const { id, name: seasonName } = (await getFiveVFiveSeasons())[index];
-
+async function getFiveVFiveCurrentTeams({ name, id }: { name: string; id: number }): Promise<TeamInfo> {
     return (
         (await get(`http://snokinghockeyleague.com/api/team/list/${id}/0?v=1021270`)) as [
             {
@@ -54,7 +54,7 @@ async function getFiveVFiveCurrentTeams(index = 0): Promise<TeamInfo> {
             }
         ]
     ).map((x) => ({
-        name: `5v5: ${x.name} (${x.divisionName} - ${seasonName})`,
+        name: `5v5: ${x.name} (${x.divisionName} - ${name})`,
         teamId: x.teamId,
         snokingUrl: `https://snokinghockeyleague.com/api/game/list/${x.seasonId}/0/${x.teamId}`,
         isSnoking: true,
@@ -110,21 +110,15 @@ export async function getCurrentTeams(): Promise<{
         }
     };
 
-    const seasonData = await Promise.all([
-        safelyGetTeams(
-            () => getFiveVFiveCurrentTeams(),
-            <>
-                <b>SKAHL 5v5</b> data is not currently available. Please try again later if you require data for that
-                league.
-            </>
-        ),
-        safelyGetTeams(
-            () => getFiveVFiveCurrentTeams(1),
-            <>
-                <b>SKAHL 5v5</b> data is not currently available. Please try again later if you require data for that
-                league..
-            </>
-        ),
+    // In the past, this code was clever to try and guess what seasons to show in the dropdown (assuming the last N were relevant)
+    // As the number of seasons fluctuates (we don't know when playoffs get scheduled, new season type, etc), instead
+    // we now just show every team that is in a season for this calendar year. This means that we'll at some point have 3 seasons showing
+    // for the main SKAHL league, but that's less interruptive then new seasons breaking our heuristic.
+    const currentYear = new Date().getFullYear().toString();
+    const allSKAHLTeamsSeasons = await getFiveVFiveSeasons();
+    const allCurrentSKAHLSeasons = allSKAHLTeamsSeasons.filter((season) => season.name.indexOf(currentYear) >= 0);
+
+    const dataForNonSKAHLSite = [
         safelyGetTeams(
             () => getPondSeasonCurrentTeams(),
             <>
@@ -140,7 +134,19 @@ export async function getCurrentTeams(): Promise<{
                 later.
             </>
         ),
-    ]);
+    ];
+
+    const dataforSKAHLSite = allCurrentSKAHLSeasons.map((season) =>
+        safelyGetTeams(
+            () => getFiveVFiveCurrentTeams(season),
+            <>
+                <b>{season.name}</b> data is not currently available. Please try again later if you require data for
+                that league.
+            </>
+        )
+    );
+
+    const seasonData = await Promise.all(dataForNonSKAHLSite.concat(dataforSKAHLSite));
     return {
         teams: seasonData.map((x) => x.data).reduce((a, b) => a.concat(b)),
         errors: seasonData.map((x) => x.error).filter((a) => a != null) as ReactElement[],
