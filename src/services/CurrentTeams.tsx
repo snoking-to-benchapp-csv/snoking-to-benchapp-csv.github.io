@@ -136,7 +136,7 @@ export async function getCurrentTeams(): Promise<{
         ),
     ];
 
-    const dataforSKAHLSite = allCurrentSKAHLSeasons.map((season) =>
+    const dataForSKAHLSite = allCurrentSKAHLSeasons.map((season) =>
         safelyGetTeams(
             () => getFiveVFiveCurrentTeams(season),
             <>
@@ -146,7 +146,7 @@ export async function getCurrentTeams(): Promise<{
         )
     );
 
-    const seasonData = await Promise.all(dataForNonSKAHLSite.concat(dataforSKAHLSite));
+    const seasonData = await Promise.all(dataForNonSKAHLSite.concat(dataForSKAHLSite));
     return {
         teams: seasonData.map((x) => x.data).reduce((a, b) => a.concat(b)),
         errors: seasonData.map((x) => x.error).filter((a) => a != null) as ReactElement[],
