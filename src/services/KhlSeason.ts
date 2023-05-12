@@ -12,7 +12,7 @@ export async function getKhlSeasonData(url: string, name: string, teamId: string
     for (let i = 0; i < games.length; i++) {
         const teams = games[i].SUMMARY.split(" - ")[1].split("@");
         const isHome = teams[1].trim() == name.slice(6);
-        const dt = moment.tz(games[i].DTSTART, "America/Chicago");
+        const dt = moment.tz(games[i].DTSTART, "America/Vancouver");
         const gameInfo = {
             id: i,
             seasonId: 1,
