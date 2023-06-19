@@ -42,6 +42,8 @@ export interface DBLGame {
      * If your team is home or away
      */
     HomeOrAway: "Home" | "Away"; 
-
+    jerseyColour: "White" | "Black";
+    endDate: string;
+    endTime: string;
     rinkName: string;
 }
