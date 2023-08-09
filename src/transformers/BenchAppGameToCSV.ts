@@ -5,15 +5,15 @@ import { BenchAppGame } from "../../typings/benchAppData";
 const EOL = "\n";
 
 const CSV_HEADER =
-    "Type,Game Type,Title (Optional),Home,Away,Date,Time,Duration,Location (Optional),Address (Optional),Notes (Optional)";
+    "Type,Game Type,Title (Optional),Away,Home,Date,Time,Duration,Location (Optional),Address (Optional),Notes (Optional)";
 
 function BenchAppGameToCSVRow(game: BenchAppGame): string {
     const fields: string[] = [
         game.Type,
         game["Game Type"],
         game.Title || "",
-        game.Home,
         game.Away,
+        game.Home,
         game.Date,
         game.Time,
         game.Duration,
