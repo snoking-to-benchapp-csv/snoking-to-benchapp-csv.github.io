@@ -19,7 +19,7 @@ export async function getKhlSeasonData(url: string, name: string, teamId: string
             dateTime: dt.format("YYYY-MM-DDTHH:mm:SS"),
             date: dt.format("MM/DD/YYYY"),
             day: dt.format("ddd"),
-            time: dt.format("hh:mm:SS A"),
+            time: dt.format("hh:mm A"),
             rinkId: 1,
             rinkName: games[i].LOCATION,
             division: null,
