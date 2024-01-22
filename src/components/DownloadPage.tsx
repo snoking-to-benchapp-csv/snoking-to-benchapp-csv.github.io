@@ -97,7 +97,7 @@ export const DownloadPage: React.FunctionComponent<{ teamInfo: TeamInfo; errors:
             <Step>
                 <Button
                     variant="secondary"
-                    href="https://snoking-to-benchap-csv.notion.site/Snoking-To-BenchApp-CSV-8b057bdb83514f9f99c16799096cf8ef"
+                    href="https://github.com/snoking-to-benchapp-csv/snoking-to-benchapp-csv.github.io/wiki"
                 >
                     Help & Support
                 </Button>
