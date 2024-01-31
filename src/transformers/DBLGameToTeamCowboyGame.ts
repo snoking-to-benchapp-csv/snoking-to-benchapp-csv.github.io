@@ -7,7 +7,7 @@ const END_TIME_FORMAT = "hh:mm:SS A";
 
 export function DBLGameToTeamCowboyGame(snokingGame: SnokingGame, teamId: string): DBLGame {
     const isHome = teamId == `${snokingGame.teamHomeSeasonId}`;
-    const endTime = moment(snokingGame.dateTime).add(90, "minutes");
+    const endTime = moment(snokingGame.dateTime).add(75, "minutes");
     return {
         Type: "GAME",
         Date: moment(snokingGame.dateTime).format(BENCH_APP_DATE_FORMAT_STRING),
