@@ -39,7 +39,20 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
         name: x.name,
         id: x.id,
     }));
-    console.log({ ans });
+
+    ans.forEach((season) => {
+        const SEASON_REMAP: { [id: string]: string | null } = {
+            // So apparently they named the playoffs incorrectly. I guess I'll just include a generalized rename
+            // to handle this if it happens in the future.
+            ["2023-2023 SKAHL Fall-Winter Playoffs"]: "2023-2024 SKAHL Fall-Winter Playoffs",
+        };
+        if (SEASON_REMAP[season.name]) {
+            season.name = SEASON_REMAP[season.name] as string;
+        } else {
+            return season;
+        }
+    });
+
     return ans;
 }
 
