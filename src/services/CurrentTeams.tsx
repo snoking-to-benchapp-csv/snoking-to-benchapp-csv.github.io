@@ -58,7 +58,7 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
 
 async function getFiveVFiveCurrentTeams({ name, id }: { name: string; id: number }): Promise<TeamInfo> {
     return (
-        (await get(`http://snokinghockeyleague.com/api/team/list/${id}/0?v=1021270`)) as [
+        (await get(`https://snokinghockeyleague.com/api/team/list/${id}/0?v=1021270`)) as [
             {
                 name: string;
                 divisionName: string;
@@ -76,7 +76,7 @@ async function getFiveVFiveCurrentTeams({ name, id }: { name: string; id: number
 
 async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
     return (
-        (await get(`http://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
+        (await get(`https://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
             seasons: [{ name: string; id: number }];
         }
     ).seasons.map((x: { name: string; id: number }) => ({
@@ -91,7 +91,7 @@ async function getPondSeasonCurrentTeams(): Promise<
     const { id, name: seasonName } = (await getPondSeasons())[0];
 
     return (
-        (await get(`http://snokingpondhockey.com/api/team/list/${id}/0?v=1021270`)) as [
+        (await get(`https://snokingpondhockey.com/api/team/list/${id}/0?v=1021270`)) as [
             { name: string; divisionName: string; teamId: string; seasonId: string }
         ]
     ).map((x) => {
