@@ -25,9 +25,9 @@ async function getCurrentKHLTeams(): Promise<TeamInfo> {
     return teams;
 }
 
-async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }>> {
+async function getFiveVFiveSeasons(version: string): Promise<Array<{ name: string; id: number }>> {
     const ans = (
-        (await get(`https://snokinghockeyleague.com/api/season/all/0?v=1021270`)) as {
+        (await get(`https://snokinghockeyleague.com/api/season/all/0?v=${version}`)) as {
             seasons: [
                 {
                     name: string;
@@ -56,9 +56,17 @@ async function getFiveVFiveSeasons(): Promise<Array<{ name: string; id: number }
     return ans;
 }
 
-async function getFiveVFiveCurrentTeams({ name, id }: { name: string; id: number }): Promise<TeamInfo> {
+async function getFiveVFiveCurrentTeams({
+    name,
+    id,
+    version,
+}: {
+    name: string;
+    id: number;
+    version: string;
+}): Promise<TeamInfo> {
     return (
-        (await get(`https://snokinghockeyleague.com/api/team/list/${id}/0?v=1021270`)) as [
+        (await get(`https://snokinghockeyleague.com/api/team/list/${id}/0?v=${version}`)) as [
             {
                 name: string;
                 divisionName: string;
@@ -74,9 +82,9 @@ async function getFiveVFiveCurrentTeams({ name, id }: { name: string; id: number
     }));
 }
 
-async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
+async function getPondSeasons(version: string): Promise<Array<{ name: string; id: number }>> {
     return (
-        (await get(`https://snokingpondhockey.com/api/season/all/0?v=1021270`)) as {
+        (await get(`https://snokingpondhockey.com/api/season/all/0?v=${version}`)) as {
             seasons: [{ name: string; id: number }];
         }
     ).seasons.map((x: { name: string; id: number }) => ({
@@ -85,13 +93,13 @@ async function getPondSeasons(): Promise<Array<{ name: string; id: number }>> {
     }));
 }
 
-async function getPondSeasonCurrentTeams(): Promise<
-    Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>
-> {
-    const { id, name: seasonName } = (await getPondSeasons())[0];
+async function getPondSeasonCurrentTeams(
+    version: string
+): Promise<Array<{ name: string; snokingUrl: string; teamId: string; isSnoking: boolean }>> {
+    const { id, name: seasonName } = (await getPondSeasons(version))[0];
 
     return (
-        (await get(`https://snokingpondhockey.com/api/team/list/${id}/0?v=1021270`)) as [
+        (await get(`https://snokingpondhockey.com/api/team/list/${id}/0?v=${version}`)) as [
             { name: string; divisionName: string; teamId: string; seasonId: string }
         ]
     ).map((x) => {
@@ -108,6 +116,16 @@ export async function getCurrentTeams(): Promise<{
     teams: TeamInfo;
     errors: ReactElement[];
 }> {
+    const main = (await get("https://snokinghockeyleague.com/")) as string;
+    const match = main.match(/meta name=\"version\"\s+content=\"(\d+)\"/);
+    if (!match || match.length < 2) {
+        return {
+            teams: [],
+            errors: [<>Data is not currently available. Please try again later if you require data for that league.</>],
+        };
+    }
+
+    const version = match[1];
     const safelyGetTeams = async (getter: () => Promise<TeamInfo>, errorMessage: ReactElement) => {
         try {
             const data = await getter();
@@ -128,12 +146,12 @@ export async function getCurrentTeams(): Promise<{
     // we now just show every team that is in a season for this calendar year. This means that we'll at some point have 3 seasons showing
     // for the main SKAHL league, but that's less interruptive then new seasons breaking our heuristic.
     const currentYear = new Date().getFullYear().toString();
-    const allSKAHLTeamsSeasons = await getFiveVFiveSeasons();
+    const allSKAHLTeamsSeasons = await getFiveVFiveSeasons(version);
     const allCurrentSKAHLSeasons = allSKAHLTeamsSeasons.filter((season) => season.name.indexOf(currentYear) >= 0);
 
     const dataForNonSKAHLSite = [
         safelyGetTeams(
-            () => getPondSeasonCurrentTeams(),
+            () => getPondSeasonCurrentTeams(version),
             <>
                 <b>SKAHL Pond</b> data is not currently available. Please try again later if you require data for that
                 league.
@@ -151,7 +169,7 @@ export async function getCurrentTeams(): Promise<{
 
     const dataForSKAHLSite = allCurrentSKAHLSeasons.map((season) =>
         safelyGetTeams(
-            () => getFiveVFiveCurrentTeams(season),
+            () => getFiveVFiveCurrentTeams({ ...season, version }),
             <>
                 <b>{season.name}</b> data is not currently available. Please try again later if you require data for
                 that league.
