@@ -116,16 +116,6 @@ export async function getCurrentTeams(): Promise<{
     teams: TeamInfo;
     errors: ReactElement[];
 }> {
-    const main = (await get("https://snokinghockeyleague.com/")) as string;
-    const match = main.match(/meta name=\"version\"\s+content=\"(\d+)\"/);
-    if (!match || match.length < 2) {
-        return {
-            teams: [],
-            errors: [<>Data is not currently available. Please try again later if you require data for that league.</>],
-        };
-    }
-
-    const version = match[1];
     const safelyGetTeams = async (getter: () => Promise<TeamInfo>, errorMessage: ReactElement) => {
         try {
             const data = await getter();
@@ -141,22 +131,7 @@ export async function getCurrentTeams(): Promise<{
         }
     };
 
-    // In the past, this code was clever to try and guess what seasons to show in the dropdown (assuming the last N were relevant)
-    // As the number of seasons fluctuates (we don't know when playoffs get scheduled, new season type, etc), instead
-    // we now just show every team that is in a season for this calendar year. This means that we'll at some point have 3 seasons showing
-    // for the main SKAHL league, but that's less interruptive then new seasons breaking our heuristic.
-    const currentYear = new Date().getFullYear().toString();
-    const allSKAHLTeamsSeasons = await getFiveVFiveSeasons(version);
-    const allCurrentSKAHLSeasons = allSKAHLTeamsSeasons.filter((season) => season.name.indexOf(currentYear) >= 0);
-
     const dataForNonSKAHLSite = [
-        safelyGetTeams(
-            () => getPondSeasonCurrentTeams(version),
-            <>
-                <b>SKAHL Pond</b> data is not currently available. Please try again later if you require data for that
-                league.
-            </>
-        ),
         safelyGetTeams(
             () => getCurrentKHLTeams(),
             <>
@@ -167,17 +142,7 @@ export async function getCurrentTeams(): Promise<{
         ),
     ];
 
-    const dataForSKAHLSite = allCurrentSKAHLSeasons.map((season) =>
-        safelyGetTeams(
-            () => getFiveVFiveCurrentTeams({ ...season, version }),
-            <>
-                <b>{season.name}</b> data is not currently available. Please try again later if you require data for
-                that league.
-            </>
-        )
-    );
-
-    const seasonData = await Promise.all(dataForNonSKAHLSite.concat(dataForSKAHLSite));
+    const seasonData = await Promise.all(dataForNonSKAHLSite);
     return {
         teams: seasonData.map((x) => x.data).reduce((a, b) => a.concat(b)),
         errors: seasonData.map((x) => x.error).filter((a) => a != null) as ReactElement[],
