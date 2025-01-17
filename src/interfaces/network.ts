@@ -6,7 +6,7 @@ import axios from "axios";
 // However, we're just downloading very public data anyway, so I don't mind literally MITM attacking myself.
 export const get = async (url: string): Promise<unknown> =>
     (
-        await axios.get(`https://corsproxy.io/?${encodeURIComponent(url)}`, {
+        await axios.get(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, {
             headers: {
                 accept: "application/json, text/plain, */*",
             },
